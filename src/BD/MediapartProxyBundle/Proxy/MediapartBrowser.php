@@ -14,6 +14,8 @@ use DOMXPath;
 
 class MediapartBrowser implements WebsiteBrowser
 {
+    private $appUri;
+
     private $rssUri = 'http://www.mediapart.fr/articles/feed';
 
     private $loginUri = 'http://www.mediapart.fr/?destination=node';
@@ -32,10 +34,11 @@ class MediapartBrowser implements WebsiteBrowser
      */
     private $password;
 
-    public function __construct( $username, $password )
+    public function __construct( $username, $password, $appUri )
     {
         $this->username = $username;
         $this->password = $password;
+        $this->appUri = $appUri;
     }
 
     public function fetchRSS()
@@ -142,7 +145,7 @@ class MediapartBrowser implements WebsiteBrowser
 
     private function fixupLink( $link )
     {
-        $link = str_replace( 'http://www.mediapart.fr/', 'http://php55-vm.mediapart-proxy/', $link );
+        $link = str_replace( 'http://www.mediapart.fr/', $this->appUri, $link );
         $link .= '?onglet=full';
         return $link;
     }

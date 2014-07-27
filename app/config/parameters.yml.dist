@@ -1,6 +1,7 @@
 parameters:
     mediapart_login:    ~
     mediapart_password: ~
+    app_uri: ~
 
     database_driver:   pdo_mysql
     database_host:     127.0.0.1

@@ -9,4 +9,4 @@ services:
 
     bd_mediapart_proxy.mediapart_browser:
         class: %bd_mediapart_proxy.mediapart_browser.class%
-        arguments: [%mediapart_login%, %mediapart_password%]
+        arguments: [%mediapart_login%, %mediapart_password%, %app_uri%]
