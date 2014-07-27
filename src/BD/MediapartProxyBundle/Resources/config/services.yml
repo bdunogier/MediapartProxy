@@ -1,0 +1,12 @@
+parameters:
+    bd_mediapart_proxy.mediapart_browser.class: BD\MediapartProxyBundle\Proxy\MediapartBrowser
+    bd_mediapart_proxy.controller.feed_proxy.class: BD\MediapartProxyBundle\Controller\FeedProxyController
+
+services:
+    bd_mediapart_proxy.controller.feed_proxy:
+        class: %bd_mediapart_proxy.controller.feed_proxy.class%
+        arguments: [@bd_mediapart_proxy.mediapart_browser]
+
+    bd_mediapart_proxy.mediapart_browser:
+        class: %bd_mediapart_proxy.mediapart_browser.class%
+        arguments: [%mediapart_login%, %mediapart_password%]
