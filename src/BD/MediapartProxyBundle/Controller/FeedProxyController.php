@@ -27,6 +27,8 @@ class FeedProxyController extends Controller
 
     public function proxyArticleAction( $uri )
     {
+        // we want full articles !
+        $uri = $uri . '?onglet=full';
         return new Response( $this->browser->fetchArticle( $uri ) );
     }
 }
