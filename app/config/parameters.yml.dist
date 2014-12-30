@@ -1,6 +1,7 @@
 parameters:
     mediapart_login:    ~
     mediapart_password: ~
+    mediapart_session_cookie_string: ~
 
     app_uri: ~
 

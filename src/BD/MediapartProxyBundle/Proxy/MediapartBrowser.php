@@ -22,7 +22,7 @@ class MediapartBrowser implements WebsiteBrowser
 
     private $baseArticlesUri = 'http://www.mediapart.fr/journal/';
 
-    private $sessionCookieString = 'SESS165d73be4354d059526d81263a52875b=997393d0a0b7ba56c1667be380c2b1ef';
+    private $sessionCookieString;
 
     /**
      * @var
@@ -34,11 +34,12 @@ class MediapartBrowser implements WebsiteBrowser
      */
     private $password;
 
-    public function __construct( $username, $password, $appUri )
+    public function __construct( $username, $password, $appUri, $sessionCookieString )
     {
         $this->username = $username;
         $this->password = $password;
         $this->appUri = $appUri;
+        $this->sessionCookieString = $sessionCookieString;
     }
 
     public function fetchRSS()
