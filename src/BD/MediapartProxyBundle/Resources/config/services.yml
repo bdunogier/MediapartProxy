@@ -1,6 +1,8 @@
 parameters:
     bd_mediapart_proxy.mediapart_browser.class: BD\MediapartProxyBundle\Proxy\MediapartBrowser
     bd_mediapart_proxy.controller.feed_proxy.class: BD\MediapartProxyBundle\Controller\FeedProxyController
+    bd_mediapart_proxy.routing_request_listener.class: BD\MediapartProxyBundle\Routing\RoutingRequestListener
+    bd_mediapart_proxy.routing_loader.yaml_finder.factory_class: BD\MediapartProxyBundle\DependencyInjection\Factory\YamlSitesRoutesFinderFactory
 
 services:
     bd_mediapart_proxy.controller.feed_proxy:
@@ -10,3 +12,27 @@ services:
     bd_mediapart_proxy.mediapart_browser:
         class: %bd_mediapart_proxy.mediapart_browser.class%
         arguments: [%mediapart_login%, %mediapart_password%, %app_uri%, %mediapart_session_cookie_string%]
+
+    bd_mediapart_proxy.routing_loader:
+        class: BD\MediapartProxyBundle\Routing\SiteRoutingLoader
+        tags:
+            - { name: routing.loader }
+        arguments:
+            - @bd_mediapart_proxy.routing_loader.finder
+            - %app_uri%
+
+    # A pre-configured instance of the finder that locates site domain routing files
+    bd_mediapart_proxy.routing_loader.finder:
+        class: Symfony\Component\Finder\Finder
+        factory_class: %bd_mediapart_proxy.routing_loader.yaml_finder.factory_class%
+        factory_method: build
+        arguments: [@bd_mediapart_proxy.routing_loader.path_getter, %app_uri%]
+
+    # Direct call to the FileLocator's locate method
+    bd_mediapart_proxy.routing_loader.path_getter:
+        lazy: true
+        class: StdClass
+        factory_service: file_locator
+        factory_method: locate
+        arguments: ['@@BDMediapartProxyBundle/Resources/config/sites_routing/']
+
