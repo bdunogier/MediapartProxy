@@ -6,9 +6,9 @@
  * @license For full copyright and license information view LICENSE file distributd with this source code.
  * @version //autogentag//
  */
-namespace BD\MediapartProxyBundle\Proxy;
+namespace BD\SiteReaderProxyBundle\Proxy;
 
-use BD\MediapartProxyBundle\Proxy\Exception\ProxyAuthenticationException;
+use BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException;
 use DOMDocument;
 use DOMXPath;
 
@@ -65,7 +65,7 @@ class MediapartBrowser implements WebsiteBrowser
      * @param string $uri
      *
      * @return string
-     * @throws \BD\MediapartProxyBundle\Proxy\Exception\ProxyAuthenticationException if authentication failed on the remote server
+     * @throws \BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException if authentication failed on the remote server
      */
     public function fetchArticle( $uri )
     {

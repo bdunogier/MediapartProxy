@@ -5,7 +5,7 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-namespace BD\MediapartProxyBundle\Controller;
+namespace BD\SiteReaderProxyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 

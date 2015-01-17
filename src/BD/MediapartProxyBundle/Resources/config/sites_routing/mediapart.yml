@@ -1,9 +1,0 @@
-bd_mediapart_proxy.mediapart_articles_feed:
-    path: /articles/feed
-    defaults: { _controller: bd_mediapart_proxy.controller.feed_proxy:proxyArticlesFeedAction }
-
-bd_mediapart_proxy.mediapart_article:
-    path: /journal/{uri}
-    defaults: { _controller: bd_mediapart_proxy.controller.feed_proxy:proxyArticleAction }
-    requirements:
-        uri: .+

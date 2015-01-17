@@ -1,6 +1,6 @@
 <?php
 
-namespace BD\MediapartProxyBundle\DependencyInjection;
+namespace BD\SiteReaderProxyBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

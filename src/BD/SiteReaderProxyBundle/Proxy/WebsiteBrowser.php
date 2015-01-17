@@ -6,10 +6,10 @@
  * @license For full copyright and license information view LICENSE file distributd with this source code.
  * @version //autogentag//
  */
-namespace BD\MediapartProxyBundle\Proxy;
+namespace BD\SiteReaderProxyBundle\Proxy;
 
 
-use BD\MediapartProxyBundle\Proxy\Exception\ProxyAuthenticationException;
+use BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException;
 
 interface WebsiteBrowser {
 
