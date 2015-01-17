@@ -1,14 +1,8 @@
 <?php
-/**
- * This file is part of the eZ Publish Legacy package
- *
- * @copyright Copyright (C) eZ Systems AS. All rights reserved.
- * @license For full copyright and license information view LICENSE file distributd with this source code.
- * @version //autogentag//
- */
-namespace BD\SiteReaderProxyBundle\Proxy;
+namespace BD\SiteReaderProxy\MediapartSiteBundle;
 
 use BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteBrowser;
 use DOMDocument;
 use DOMXPath;
 

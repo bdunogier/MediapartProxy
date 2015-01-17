@@ -1,12 +1,11 @@
 <?php
-
-namespace BD\SiteReaderProxyBundle\Controller;
+namespace BD\SiteReaderProxy\MediapartSiteBundle\Controller;
 
 use BD\SiteReaderProxyBundle\Proxy\WebsiteBrowser;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class FeedProxyController extends Controller
+class MediapartController extends Controller
 {
     /** @var WebsiteBrowser */
     private $browser;

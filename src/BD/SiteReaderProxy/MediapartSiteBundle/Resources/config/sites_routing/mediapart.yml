@@ -1,0 +1,9 @@
+bd_mediapart_site_reader.articles_feed:
+    path: /articles/feed
+    defaults: { _controller: bd_mediapart_site_reader.controller.feed_proxy:proxyArticlesFeedAction }
+
+bd_mediapart_site_reader.article:
+    path: /journal/{uri}
+    defaults: { _controller: bd_mediapart_site_reader.controller.feed_proxy:proxyArticleAction }
+    requirements:
+        uri: .+
