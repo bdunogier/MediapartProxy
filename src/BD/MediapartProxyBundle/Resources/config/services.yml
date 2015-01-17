@@ -36,3 +36,6 @@ services:
         factory_method: locate
         arguments: ['@@BDMediapartProxyBundle/Resources/config/sites_routing/']
 
+
+    bd_mediapart_proxy.site.controller.lmd:
+        class: BD\MediapartProxyBundle\Controller\LmdSiteController
