@@ -1,3 +1,0 @@
-bd_site_reader_proxy_mediapart_site_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: BDSiteReaderProxyMediapartSiteBundle:Default:index }
