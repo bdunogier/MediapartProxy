@@ -1,4 +1,4 @@
 bd_mediapart_proxy:
-    resource: "@BDMediapartProxyBundle/Resources/config/routing.yml"
-    prefix:   /
+    resource: .
+    type: domain
 
