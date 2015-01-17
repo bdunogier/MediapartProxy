@@ -11,9 +11,9 @@ use Symfony\Component\Finder\Finder;
 
 class YamlSitesRoutesFinderFactory
 {
-    public static function build( $directory )
+    public static function build()
     {
         $finder = new Finder();
-        return $finder->in( $directory )->files()->name( "*.yml" );
+        return $finder->files()->name( "*.yml" );
     }
 }
