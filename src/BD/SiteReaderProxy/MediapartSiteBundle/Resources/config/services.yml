@@ -1,0 +1,13 @@
+parameters:
+    bd_site_reader_proxy.mediapart_browser.class: BD\SiteReaderProxy\MediapartSiteBundle\MediapartBrowser
+    bd_site_reader_proxy.controller.mediapart.class: BD\SiteReaderProxy\MediapartSiteBundle\Controller\MediapartController
+
+services:
+    bd_mediapart_site_reader.controller.mediapart:
+        class: %bd_site_reader_proxy.controller.mediapart.class%
+        arguments: [@bd_mediapart_site_reader.mediapart_browser]
+
+    bd_mediapart_site_reader.mediapart_browser:
+        class: %bd_site_reader_proxy.mediapart_browser.class%
+        arguments: [%mediapart_login%, %mediapart_password%, %app_uri%, %mediapart_session_cookie_string%]
+
