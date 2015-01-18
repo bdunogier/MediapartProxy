@@ -1,6 +1,6 @@
 <?php
 
-namespace BD\MediapartProxyBundle\Tests\Controller;
+namespace BD\SiteReaderProxyBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

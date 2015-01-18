@@ -5,7 +5,7 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-namespace BD\MediapartProxyBundle\DependencyInjection\Factory;
+namespace BD\SiteReaderProxyBundle\DependencyInjection\Factory;
 
 use Symfony\Component\Finder\Finder;
 

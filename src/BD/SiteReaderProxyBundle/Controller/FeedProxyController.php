@@ -1,8 +1,8 @@
 <?php
 
-namespace BD\MediapartProxyBundle\Controller;
+namespace BD\SiteReaderProxyBundle\Controller;
 
-use BD\MediapartProxyBundle\Proxy\WebsiteBrowser;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteBrowser;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 

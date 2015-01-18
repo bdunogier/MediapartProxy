@@ -1,5 +1,5 @@
 <?php
-namespace BD\MediapartProxyBundle\Routing;
+namespace BD\SiteReaderProxyBundle\Routing;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\FileLocatorInterface;
