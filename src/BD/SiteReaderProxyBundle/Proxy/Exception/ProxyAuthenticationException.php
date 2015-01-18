@@ -1,5 +1,5 @@
 <?php
-namespace BD\MediapartProxyBundle\Proxy\Exception;
+namespace BD\SiteReaderProxyBundle\Proxy\Exception;
 
 use Exception;
 
