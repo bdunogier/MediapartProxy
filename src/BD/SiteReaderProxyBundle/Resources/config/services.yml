@@ -19,3 +19,7 @@ services:
 
     bd_site_reader_proxy.site.controller.lmd:
         class: BD\SiteReaderProxyBundle\Controller\LmdSiteController
+
+    bd_site_reader_proxy.browser:
+        class: BD\SiteReaderProxyBundle\Proxy\BaseWebsiteBrowser
+        abstract: true
