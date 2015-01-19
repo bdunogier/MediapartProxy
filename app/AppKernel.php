@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new BD\SiteReaderProxyBundle\BDSiteReaderProxyBundle(),
             new BD\SiteReaderProxy\MediapartSiteBundle\BDSiteReaderProxyMediapartSiteBundle(),
+            new BD\SiteReaderProxy\LmdSiteBundle\BDSiteReaderProxyLmdSiteBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

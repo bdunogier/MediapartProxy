@@ -1,0 +1,5 @@
+bd_mediapart_proxy.site.lmd.all:
+    path: /{uri}
+    defaults: { _controller: bd_mediapart_proxy.site.controller.lmd:uriAction }
+    requirements:
+        uri: .+

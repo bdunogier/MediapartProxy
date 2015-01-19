@@ -28,4 +28,19 @@ class MediapartAuthenticator
     {
         return ["op" => "ok", "form_id" => "user_login_block"];
     }
+
+    public function getUsernameFieldName()
+    {
+        return 'name';
+    }
+
+    public function getPasswordFieldName()
+    {
+        return 'pass';
+    }
+
+    public function getExtraFormFields()
+    {
+        return ["op" => "ok", "form_id" => "user_login_block"];
+    }
 }
