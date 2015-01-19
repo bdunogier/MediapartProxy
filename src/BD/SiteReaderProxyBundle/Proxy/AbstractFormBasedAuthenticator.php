@@ -8,9 +8,10 @@
 namespace BD\SiteReaderProxyBundle\Proxy;
 
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CredentialsBased;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\FormBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\UrlBased;
 
-abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBased
+abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBased, FormBased
 {
     /** @var string */
     private $username;
@@ -55,12 +56,7 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
                     'method' => 'POST',
                     'header' => 'Content-type: application/x-www-form-urlencoded\r\n',
                     'content' => http_build_query(
-                        array(
-                            "name" => $this->getUsername(),
-                            "pass" => $this->getPassword(),
-                            "op" => "ok",
-                            "form_id" => "user_login_block"
-                        )
+                        ["name" => $this->getUsername(), "pass" => $this->getPassword()] + $this->getExtraFormFields()
                     )
                 )
             )
