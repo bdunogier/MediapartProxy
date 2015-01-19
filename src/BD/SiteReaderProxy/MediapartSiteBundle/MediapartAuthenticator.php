@@ -12,40 +12,20 @@ use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator;
 
 class MediapartAuthenticator
     extends AbstractFormBasedAuthenticator
-    implements WebsiteAuthenticator, WebsiteAuthenticator\UrlBased, WebsiteAuthenticator\CredentialsBased
+    implements WebsiteAuthenticator, WebsiteAuthenticator\UrlBased, WebsiteAuthenticator\CredentialsBased, WebsiteAuthenticator\FormBased
 {
-    /** @var string */
-    private $username;
-
-    /** @var string */
-    private $password;
-
-    /** @var string */
-    private $uri;
-
-    public function setCredentials( $username, $password )
+    public function getUsernameFieldName()
     {
-        $this->username = $username;
-        $this->password = $password;
+        return 'name';
     }
 
-    public function setUri( $uri )
+    public function getPasswordFieldName()
     {
-        $this->uri = $uri;
+        return 'pass';
     }
 
-    public function getUri()
+    public function getExtraFormFields()
     {
-        return $this->uri;
-    }
-
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    public function getPassword()
-    {
-        return $this->password;
+        return ["op" => "ok", "form_id" => "user_login_block"];
     }
 }

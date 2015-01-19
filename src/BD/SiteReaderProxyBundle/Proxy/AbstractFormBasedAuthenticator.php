@@ -12,6 +12,41 @@ use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\UrlBased;
 
 abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBased
 {
+    /** @var string */
+    private $username;
+
+    /** @var string */
+    private $password;
+
+    /** @var string */
+    private $uri;
+
+    public function setCredentials( $username, $password )
+    {
+        $this->username = $username;
+        $this->password = $password;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setUri( $uri )
+    {
+        $this->uri = $uri;
+    }
+
+    public function getUri()
+    {
+        return $this->uri;
+    }
+
     public function login()
     {
         $context = stream_context_create(
