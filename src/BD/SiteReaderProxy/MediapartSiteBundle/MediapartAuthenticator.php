@@ -8,11 +8,17 @@
 namespace BD\SiteReaderProxy\MediapartSiteBundle;
 
 use BD\SiteReaderProxyBundle\Proxy\AbstractFormBasedAuthenticator;
+use BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CredentialsBased;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\FormBased;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\UrlBased;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 
 class MediapartAuthenticator
     extends AbstractFormBasedAuthenticator
-    implements WebsiteAuthenticator, WebsiteAuthenticator\UrlBased, WebsiteAuthenticator\CredentialsBased, WebsiteAuthenticator\FormBased
+    implements WebsiteAuthenticator, UrlBased, CredentialsBased, FormBased
 {
     public function getUsernameFieldName()
     {
@@ -29,26 +35,28 @@ class MediapartAuthenticator
         return ["op" => "ok", "form_id" => "user_login_block"];
     }
 
-    public function verifyHeaders( array $responseHeaders )
+    public function verifyCookies( CookieJar $cookieJar )
     {
-        $sessionCookieString = null;
-        foreach ( (array)$responseHeaders['Set-Cookie'] as $cookie )
+        $gotSessionCookie = $gotRoleCookie = false;
+
+        /** @var SetCookie $cookie */
+        foreach ( $cookieJar as $cookie )
         {
-            if (substr( $cookie, 0, 4 ) == 'SESS') {
-                $sessionCookieString = $cookie;
+            if ( substr( $cookie->getName(), 0, 4 ) == 'SESS' )
+            {
+                $gotSessionCookie = true;
                 continue;
             }
 
-            if (substr( $cookie, 0, 19 ) == 'roles=authenticated') {
+            if ( $cookie->getName() === 'roles'  && $cookie->getValue() === 'authenticated+user%3A%3Aabonne' )
+            {
                 $gotRoleCookie = true;
             }
         }
 
-        if ( !isset( $gotRoleCookie ) )
+        if ( !$gotRoleCookie || !$gotSessionCookie )
         {
-            return null;
+            throw new ProxyAuthenticationException( $this->getUri() );
         }
-
-        return $sessionCookieString;
     }
 }

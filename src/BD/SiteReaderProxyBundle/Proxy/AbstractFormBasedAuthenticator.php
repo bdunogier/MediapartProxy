@@ -7,14 +7,18 @@
  */
 namespace BD\SiteReaderProxyBundle\Proxy;
 
-use BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CookieBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CredentialsBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\FormBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\UrlBased;
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 
-abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBased, FormBased
+abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBased, FormBased, CookieBased
 {
+    /** @var CookieJar */
+    private $cookieJar;
+
     /** @var string */
     private $username;
 
@@ -25,11 +29,11 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
     private $uri;
 
     /** @var \GuzzleHttp\Client */
-    protected $client;
+    protected $guzzle;
 
-    public function setClient( Client $client )
+    public function setGuzzleClient( Client $guzzle )
     {
-        $this->client = $client;
+        $this->guzzle = $guzzle;
     }
 
     public function setCredentials( $username, $password )
@@ -65,27 +69,31 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
             $this->getPasswordFieldName() => $this->getPassword()
         ] + $this->getExtraFormFields();
 
-        $response = $this->client->post(
+        $this->guzzle->post(
             $this->getUri(),
-            ['body' => $postFields, 'allow_redirects' => false]
+            ['body' => $postFields, 'allow_redirects' => true, 'cookies' => $this->getCookieJar() ]
         );
 
-        if ( !$response->hasHeader( 'location' ) )
-        {
-            throw new \Exception( "no location in response" );
-        }
-        $response = $this->client->get( $response->getHeader( 'location' ), ['allow_redirects' => false] );
-        if ( !$response->hasHeader( 'set-cookie' ) )
-        {
-            throw new \Exception( "no location in 2nd response" );
-        }
+        $this->verifyCookies( $this->getCookieJar() );
+    }
 
-        $sessionCookieString = $this->verifyHeaders( $response->getHeaders() );
-
-        if ( ( $sessionCookieString = $this->verifyHeaders( $response->getHeaders() ) ) === null )
+    /**
+     * @return CookieJar
+     */
+    public function getCookieJar()
+    {
+        if ( !isset( $this->cookieJar ) )
         {
-            throw new ProxyAuthenticationException( $this->getUri() );
+            $this->cookieJar = new CookieJar();
         }
-        return $sessionCookieString;
+        return $this->cookieJar;
+    }
+
+    /**
+     * @param CookieJar $cookieJar
+     */
+    public function setCookieJar( $cookieJar )
+    {
+        $this->cookieJar = $cookieJar;
     }
 }

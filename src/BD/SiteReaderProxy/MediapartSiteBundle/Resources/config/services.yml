@@ -17,6 +17,7 @@ services:
         calls:
             - [setUri, ['http://www.mediapart.fr/?destination=node']]
             - [setCredentials, [%mediapart_login%, %mediapart_password%]]
+            - [setGuzzleClient, [@bd_site_reader_proxy.guzzle_client]]
 
     bd_mediapart_site_reader.mediapart_browser:
         parent: bd_site_reader_proxy.browser

@@ -20,3 +20,8 @@ services:
     bd_site_reader_proxy.browser:
         class: BD\SiteReaderProxyBundle\Proxy\BaseWebsiteBrowser
         abstract: true
+        calls:
+            - [setGuzzleClient, [@bd_site_reader_proxy.guzzle_client]]
+
+    bd_site_reader_proxy.guzzle_client:
+        class: GuzzleHttp\Client

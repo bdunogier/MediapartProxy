@@ -6,6 +6,7 @@ use BD\SiteReaderProxyBundle\Proxy\WebsiteBrowser;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteConfiguration;
 use DOMDocument;
 use DOMXPath;
+use GuzzleHttp\Client;
 
 class BaseWebsiteBrowser implements WebsiteBrowser, WebsiteBrowser\SessionAware
 {
@@ -15,8 +16,8 @@ class BaseWebsiteBrowser implements WebsiteBrowser, WebsiteBrowser\SessionAware
     /** @var \BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator */
     private $authenticator;
 
-    /** @var string */
-    private $sessionCookieString;
+    /** @var \GuzzleHttp\Client */
+    private $guzzle;
 
     /**
      * @param \BD\SiteReaderProxyBundle\Proxy\WebsiteConfiguration $configuration
@@ -56,12 +57,11 @@ class BaseWebsiteBrowser implements WebsiteBrowser, WebsiteBrowser\SessionAware
     public function fetchArticle( $uri )
     {
         try {
-            $html = $this->downloadArticleWithAuthentication( $uri );
+            return $this->downloadArticleWithAuthentication( $uri );
         } catch (ProxyAuthenticationException $e) {
-            $this->sessionCookieString = $this->authenticator->login();
-            $html = $this->downloadArticleWithAuthentication( $uri );
+            $this->authenticator->login();
+            return $this->downloadArticleWithAuthentication( $uri );
         }
-        return $html;
     }
 
     /**
@@ -74,17 +74,16 @@ class BaseWebsiteBrowser implements WebsiteBrowser, WebsiteBrowser\SessionAware
      */
     private function downloadArticleWithAuthentication( $uri )
     {
-        $curl = curl_init( $this->configuration->getBaseArticleUri() . '/' . ltrim( $uri, '/' ) );
-        curl_setopt( $curl, CURLOPT_COOKIE, $this->sessionCookieString );
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-        $html = curl_exec( $curl );
+        $url = $this->configuration->getBaseArticleUri() . '/' . ltrim( $uri, '/' );
 
-        if ( $this->configuration->isDisconnected( $html ) )
+        $response = $this->guzzle->get( $url, ['cookies' => $this->authenticator->getCookieJar()] );
+
+        if ( $this->configuration->isDisconnected( $response->getBody() ) )
         {
             throw new ProxyAuthenticationException( $uri );
         }
 
-        return $html;
+        return $response->getBody();
     }
 
     public function setSessionCookieString( $sessionCookieString )
@@ -95,5 +94,10 @@ class BaseWebsiteBrowser implements WebsiteBrowser, WebsiteBrowser\SessionAware
     public function getSessionCookieString()
     {
         return $this->sessionCookieString;
+    }
+
+    public function setGuzzleClient( Client $guzzleClient )
+    {
+        $this->guzzle = $guzzleClient;
     }
 }

@@ -2,16 +2,20 @@
 namespace BD\SiteReaderProxy\LmdSiteBundle;
 
 use BD\SiteReaderProxyBundle\Proxy\AbstractFormBasedAuthenticator;
+use BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CookieBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CredentialsBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\FormBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\UrlBased;
 use DOMDocument;
 use DOMXPath;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 
 class LmdAuthenticator
     extends AbstractFormBasedAuthenticator
-    implements WebsiteAuthenticator, CredentialsBased, UrlBased, FormBased
+    implements WebsiteAuthenticator, CredentialsBased, UrlBased, FormBased, CookieBased
 {
     public function getUri()
     {
@@ -61,16 +65,22 @@ class LmdAuthenticator
         return $hash;
     }
 
-    public function verifyHeaders( array $responseHeaders )
+    public function verifyCookies( CookieJar $cookieJar )
     {
-        foreach ( (array)$responseHeaders['Set-Cookie'] as $cookie )
+        $gotCookie = false;
+
+        /** @var \GuzzleHttp\Cookie\SetCookie $cookie */
+        foreach ( $cookieJar as $cookie )
         {
-            if ( preg_match( '/(spip_session=^;+)/', $cookie, $m ) )
+            if ( $cookie->getName() == 'spip_session' )
             {
-                return $m[0];
+                $gotCookie = true;
             }
         }
 
-        return null;
+        if ( !$gotCookie )
+        {
+            throw new ProxyAuthenticationException( $this->getUri() );
+        }
     }
 }

@@ -17,10 +17,7 @@ services:
         calls:
             - [setCredentials, [%lmd.username%, %lmd.password%]]
             - [setUri, [%lmd.login_uri]]
-            - [setClient, [@bd_lmd_site_reader.guzzle_client]]
-
-    bd_lmd_site_reader.guzzle_client:
-        class: GuzzleHttp\Client
+            - [setGuzzleClient, [@bd_site_reader_proxy.guzzle_client]]
 
     bd_lmd_site_reader.browser:
         parent: bd_site_reader_proxy.browser

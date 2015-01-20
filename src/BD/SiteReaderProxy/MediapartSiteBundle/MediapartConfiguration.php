@@ -9,7 +9,7 @@ class MediapartConfiguration implements WebsiteConfiguration
 
     private $rssUri = 'http://www.mediapart.fr/articles/feed';
 
-    private $baseArticlesUri = 'http://www.mediapart.fr/journal/';
+    private $baseArticlesUri = 'http://www.mediapart.fr';
 
     /**
      * @param $username
