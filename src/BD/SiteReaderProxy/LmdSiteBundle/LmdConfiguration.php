@@ -50,6 +50,10 @@ class LmdConfiguration implements WebsiteConfiguration
      */
     public function fixUpRssLink( $rssLink )
     {
-        return str_replace( 'http://www.monde-diplomatique.fr', $this->appUri, $rssLink );
+        return str_replace(
+            'http://www.monde-diplomatique.fr/',
+            str_replace( '://', '://lmd.', $this->appUri ),
+            $rssLink
+        );
     }
 }
