@@ -50,6 +50,6 @@ class LmdConfiguration implements WebsiteConfiguration
      */
     public function fixUpRssLink( $rssLink )
     {
-        return str_replace( 'http://www.monde-diplomatique.fr', 'http://lmd.php55-vm.mediapart-proxy', $rssLink );
+        return str_replace( 'http://www.monde-diplomatique.fr', $this->appUri, $rssLink );
     }
 }
