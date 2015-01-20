@@ -29,18 +29,26 @@ class MediapartAuthenticator
         return ["op" => "ok", "form_id" => "user_login_block"];
     }
 
-    public function getUsernameFieldName()
+    public function verifyHeaders( array $responseHeaders )
     {
-        return 'name';
-    }
+        $sessionCookieString = null;
+        foreach ( (array)$responseHeaders['Set-Cookie'] as $cookie )
+        {
+            if (substr( $cookie, 0, 4 ) == 'SESS') {
+                $sessionCookieString = $cookie;
+                continue;
+            }
 
-    public function getPasswordFieldName()
-    {
-        return 'pass';
-    }
+            if (substr( $cookie, 0, 19 ) == 'roles=authenticated') {
+                $gotRoleCookie = true;
+            }
+        }
 
-    public function getExtraFormFields()
-    {
-        return ["op" => "ok", "form_id" => "user_login_block"];
+        if ( !isset( $gotRoleCookie ) )
+        {
+            return null;
+        }
+
+        return $sessionCookieString;
     }
 }
