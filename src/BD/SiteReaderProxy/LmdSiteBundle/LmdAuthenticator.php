@@ -63,6 +63,25 @@ class LmdAuthenticator
 
     public function verifyHeaders( array $responseHeaders )
     {
-        return '';
+        if ( !isset( $responseHeaders['Set-Cookie'] ) )
+        {
+            return null;
+        }
+
+        if ( is_array( $responseHeaders['Set-Cookie'] ) )
+        {
+            if ( count( $responseHeaders['Set-Cookie'] ) === 0 )
+            {
+                return null;
+            }
+            $cookie = $responseHeaders['Set-Cookie'][0];
+        }
+
+        if ( !preg_match( '/(spip_session=[^;]+)/', $cookie, $m ) )
+        {
+            return null;
+        }
+
+        return $m[1];
     }
 }

@@ -7,9 +7,11 @@
  */
 namespace BD\SiteReaderProxyBundle\Proxy;
 
+use BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CredentialsBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\FormBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\UrlBased;
+use GuzzleHttp\Client;
 
 abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBased, FormBased
 {
@@ -21,6 +23,14 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
 
     /** @var string */
     private $uri;
+
+    /** @var \GuzzleHttp\Client */
+    protected $client;
+
+    public function setClient( Client $client )
+    {
+        $this->client = $client;
+    }
 
     public function setCredentials( $username, $password )
     {
@@ -50,44 +60,32 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
 
     public function login()
     {
-        $context = stream_context_create(
-            array(
-                'http' => array(
-                    'method' => 'POST',
-                    'header' => 'Content-type: application/x-www-form-urlencoded\r\n',
-                    'content' => http_build_query(
-                        ["name" => $this->getUsername(), "pass" => $this->getPassword()] + $this->getExtraFormFields()
-                    )
-                )
-            )
+        $postFields = [
+            $this->getUsernameFieldName() => $this->getUsername(),
+            $this->getPasswordFieldName() => $this->getPassword()
+        ] + $this->getExtraFormFields();
+
+        $response = $this->client->post(
+            $this->getUri(),
+            ['body' => $postFields, 'allow_redirects' => false]
         );
 
-        file_get_contents( $this->getUri(), false, $context );
-        foreach ($http_response_header as $headerString) {
-            if (!strstr( ':', $headerString )) {
-                continue;
-            }
-
-            list( $headerName, $headerValue ) = explode( ':', $headerString );
-
-            if ($headerName !== 'Set-Cookie') {
-                continue;
-            }
-
-            if (substr( $headerName, 0, 4 ) == 'SESS') {
-                $sessionCookieString = $headerValue;
-                continue;
-            }
-
-            if (substr( $headerName, 0, 19 ) == 'roles=authenticated') {
-                $roleCookieString = $headerValue;
-            }
+        if ( !$response->hasHeader( 'location' ) )
+        {
+            throw new \Exception( "no location in response" );
+        }
+        $response = $this->client->get( $response->getHeader( 'location' ), ['allow_redirects' => false] );
+        if ( !$response->hasHeader( 'set-cookie' ) )
+        {
+            throw new \Exception( "no location in 2nd response" );
         }
 
-        if (!isset( $sessionCookieString ) || !isset( $roleCookieString )) {
-            throw new \Exception( "No role cookie in loginresponse" );
-        }
+        $sessionCookieString = $this->verifyHeaders( $response->getHeaders() );
 
+        if ( ( $sessionCookieString = $this->verifyHeaders( $response->getHeaders() ) ) === null )
+        {
+            throw new ProxyAuthenticationException( $this->getUri() );
+        }
         return $sessionCookieString;
     }
 }

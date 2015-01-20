@@ -56,12 +56,12 @@ class BaseWebsiteBrowser implements WebsiteBrowser, WebsiteBrowser\SessionAware
     public function fetchArticle( $uri )
     {
         try {
-            $articleHTML = $this->downloadArticleWithAuthentication( $uri );
+            $html = $this->downloadArticleWithAuthentication( $uri );
         } catch (ProxyAuthenticationException $e) {
             $this->sessionCookieString = $this->authenticator->login();
-            $articleHTML = $this->downloadArticleWithAuthentication( $uri );
+            $html = $this->downloadArticleWithAuthentication( $uri );
         }
-        return $articleHTML;
+        return $html;
     }
 
     /**
