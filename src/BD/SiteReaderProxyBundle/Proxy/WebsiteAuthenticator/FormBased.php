@@ -15,4 +15,6 @@ interface FormBased
     public function getPasswordFieldName();
 
     public function getExtraFormFields();
+
+    public function verifyHeaders( array $responseHeaders );
 }
