@@ -74,7 +74,7 @@ class BaseWebsiteBrowser implements WebsiteBrowser, WebsiteBrowser\SessionAware
      */
     private function downloadArticleWithAuthentication( $uri )
     {
-        $curl = curl_init( $this->configuration->getBaseArticleUri() . $uri );
+        $curl = curl_init( $this->configuration->getBaseArticleUri() . '/' . ltrim( $uri, '/' ) );
         curl_setopt( $curl, CURLOPT_COOKIE, $this->sessionCookieString );
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
         $html = curl_exec( $curl );
