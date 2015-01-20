@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new BD\SiteReaderProxyBundle\BDSiteReaderProxyBundle(),
             new BD\SiteReaderProxy\MediapartSiteBundle\BDSiteReaderProxyMediapartSiteBundle(),
             new BD\SiteReaderProxy\LmdSiteBundle\BDSiteReaderProxyLmdSiteBundle(),
+            new Misd\GuzzleBundle\MisdGuzzleBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

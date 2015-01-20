@@ -3,6 +3,9 @@ parameters:
     mediapart_password: ~
     mediapart_session_cookie_string: ~
 
+    lmd.username: ~
+    lmd.password: ~
+
     app_uri: ~
 
     locale:            en
