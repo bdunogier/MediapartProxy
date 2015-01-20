@@ -19,7 +19,7 @@ class LmdConfiguration implements WebsiteConfiguration
 
     public function getBaseArticleUri()
     {
-        return 'http://www.monde-diplomatique.fr/';
+        return rtrim( 'http://www.monde-diplomatique.fr' );
     }
 
     /**
@@ -29,7 +29,7 @@ class LmdConfiguration implements WebsiteConfiguration
      */
     public function isDisconnected( $html )
     {
-        return strpos( $html, 'href="/mon_compte"' ) !== 0;
+        return strpos( $html, 'href="/mon_compte"' ) === false;
     }
 
     /**
@@ -41,6 +41,6 @@ class LmdConfiguration implements WebsiteConfiguration
      */
     public function fixUpRssLink( $rssLink )
     {
-        return $rssLink;
+        return str_replace( 'http://www.monde-diplomatique.fr', 'http://lmd.php55-vm.mediapart-proxy', $rssLink );
     }
 }

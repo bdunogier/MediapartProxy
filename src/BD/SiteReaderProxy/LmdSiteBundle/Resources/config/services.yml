@@ -6,12 +6,21 @@ parameters:
 services:
     bd_lmd_site_reader.site.controller.lmd:
         class: %bd_lmd_site_reader.site.controller.lmd.class%
+        arguments:
+            - @bd_lmd_site_reader.browser
 
     bd_lmd_site_reader.configuration:
         class: %bd_lmd_site_reader.configuration.class%
 
     bd_lmd_site_reader.authenticator:
         class: %bd_lmd_site_reader.authenticator.class%
+        calls:
+            - [setCredentials, [%lmd.username%, %lmd.password%]]
+            - [setUri, [%lmd.login_uri]]
+            - [setClient, [@bd_lmd_site_reader.guzzle_client]]
+
+    bd_lmd_site_reader.guzzle_client:
+        class: GuzzleHttp\Client
 
     bd_lmd_site_reader.browser:
         parent: bd_site_reader_proxy.browser
