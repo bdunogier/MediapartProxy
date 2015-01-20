@@ -11,6 +11,13 @@ use BD\SiteReaderProxyBundle\Proxy\WebsiteConfiguration;
 
 class LmdConfiguration implements WebsiteConfiguration
 {
+    /** @var string */
+    private $appUri;
+
+    public function __construct( $appUri )
+    {
+        $this->appUri = $appUri;
+    }
 
     public function getRssUri()
     {
@@ -38,6 +45,8 @@ class LmdConfiguration implements WebsiteConfiguration
      * @param string $rssLink
      *
      * @return string
+     *
+     * @todo Decouple. This has nothing to do here.
      */
     public function fixUpRssLink( $rssLink )
     {
