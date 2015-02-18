@@ -1,13 +1,29 @@
 parameters:
-    bd_site_reader_proxy.mediapart_browser.class: BD\SiteReaderProxy\MediapartSiteBundle\MediapartBrowser
-    bd_site_reader_proxy.controller.mediapart.class: BD\SiteReaderProxy\MediapartSiteBundle\Controller\MediapartController
+    bd_mediapart_site_reader.mediapart_configuration.class: BD\SiteReaderProxy\MediapartSiteBundle\MediapartConfiguration
+    bd_mediapart_site_reader.controller.mediapart.class: BD\SiteReaderProxy\MediapartSiteBundle\Controller\MediapartController
+    bd_mediapart_site_reader.mediapart_authenticator.class: BD\SiteReaderProxy\MediapartSiteBundle\MediapartAuthenticator
 
 services:
     bd_mediapart_site_reader.controller.mediapart:
-        class: %bd_site_reader_proxy.controller.mediapart.class%
+        class: %bd_mediapart_site_reader.controller.mediapart.class%
         arguments: [@bd_mediapart_site_reader.mediapart_browser]
 
+    bd_mediapart_site_reader.mediapart_configuration:
+        class: %bd_mediapart_site_reader.mediapart_configuration.class%
+        arguments: [%app_uri%]
+
+    bd_mediapart_site_reader.mediapart_authenticator:
+        class: %bd_mediapart_site_reader.mediapart_authenticator.class%
+        calls:
+            - [setUri, ['http://www.mediapart.fr/?destination=node']]
+            - [setCredentials, [%mediapart_login%, %mediapart_password%]]
+            - [setGuzzleClient, [@bd_site_reader_proxy.guzzle_client]]
+
     bd_mediapart_site_reader.mediapart_browser:
-        class: %bd_site_reader_proxy.mediapart_browser.class%
-        arguments: [%mediapart_login%, %mediapart_password%, %app_uri%, %mediapart_session_cookie_string%]
+        parent: bd_site_reader_proxy.browser
+        arguments:
+            - @bd_mediapart_site_reader.mediapart_configuration
+            - @bd_mediapart_site_reader.mediapart_authenticator
+        calls:
+            - [setSessionCookieString, [%mediapart_session_cookie_string%]]
 

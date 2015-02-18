@@ -17,5 +17,11 @@ services:
         factory_class: %bd_site_reader_proxy.routing_loader.yaml_finder.factory_class%
         factory_method: build
 
-    bd_site_reader_proxy.site.controller.lmd:
-        class: BD\SiteReaderProxyBundle\Controller\LmdSiteController
+    bd_site_reader_proxy.browser:
+        class: BD\SiteReaderProxyBundle\Proxy\BaseWebsiteBrowser
+        abstract: true
+        calls:
+            - [setGuzzleClient, [@bd_site_reader_proxy.guzzle_client]]
+
+    bd_site_reader_proxy.guzzle_client:
+        class: GuzzleHttp\Client

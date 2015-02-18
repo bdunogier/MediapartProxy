@@ -1,0 +1,9 @@
+bd_site_reader_proxy.site.lmd.rss:
+    path: /rss/
+    defaults: { _controller: bd_lmd_site_reader.site.controller.lmd:rssAction }
+
+bd_site_reader_proxy.site.lmd.all:
+    path: /{uri}
+    defaults: { _controller: bd_lmd_site_reader.site.controller.lmd:uriAction }
+    requirements:
+        uri: .*

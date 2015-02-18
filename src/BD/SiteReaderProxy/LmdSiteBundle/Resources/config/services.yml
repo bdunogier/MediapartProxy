@@ -1,0 +1,27 @@
+parameters:
+    bd_lmd_site_reader.site.controller.lmd.class: BD\SiteReaderProxy\LmdSiteBundle\Controller\LmdSiteController
+    bd_lmd_site_reader.configuration.class: BD\SiteReaderProxy\LmdSiteBundle\LmdConfiguration
+    bd_lmd_site_reader.authenticator.class: BD\SiteReaderProxy\LmdSiteBundle\LmdAuthenticator
+
+services:
+    bd_lmd_site_reader.site.controller.lmd:
+        class: %bd_lmd_site_reader.site.controller.lmd.class%
+        arguments:
+            - @bd_lmd_site_reader.browser
+
+    bd_lmd_site_reader.configuration:
+        class: %bd_lmd_site_reader.configuration.class%
+        arguments: [%app_uri%]
+
+    bd_lmd_site_reader.authenticator:
+        class: %bd_lmd_site_reader.authenticator.class%
+        calls:
+            - [setCredentials, [%lmd.username%, %lmd.password%]]
+            - [setUri, [%lmd.login_uri]]
+            - [setGuzzleClient, [@bd_site_reader_proxy.guzzle_client]]
+
+    bd_lmd_site_reader.browser:
+        parent: bd_site_reader_proxy.browser
+        arguments:
+            - @bd_lmd_site_reader.configuration
+            - @bd_lmd_site_reader.authenticator
