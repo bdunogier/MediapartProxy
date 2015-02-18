@@ -19,6 +19,7 @@ services:
             - [setCredentials, [%lmd.username%, %lmd.password%]]
             - [setUri, [%lmd.login_uri]]
             - [setGuzzleClient, [@bd_site_reader_proxy.guzzle_client]]
+            - [setCookieJar, [@bd_site_reader_proxy.cookie_jar]]
 
     bd_lmd_site_reader.browser:
         parent: bd_site_reader_proxy.browser

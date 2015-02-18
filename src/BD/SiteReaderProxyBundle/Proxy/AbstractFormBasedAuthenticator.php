@@ -42,6 +42,11 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
         $this->password = $password;
     }
 
+    public function setCookieJar( CookieJar $cookieJar )
+    {
+        $this->cookieJar = $cookieJar;
+    }
+
     public function getUsername()
     {
         return $this->username;
@@ -82,18 +87,6 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
      */
     public function getCookieJar()
     {
-        if ( !isset( $this->cookieJar ) )
-        {
-            $this->cookieJar = new CookieJar();
-        }
         return $this->cookieJar;
-    }
-
-    /**
-     * @param CookieJar $cookieJar
-     */
-    public function setCookieJar( $cookieJar )
-    {
-        $this->cookieJar = $cookieJar;
     }
 }

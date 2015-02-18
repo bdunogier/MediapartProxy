@@ -25,3 +25,13 @@ services:
 
     bd_site_reader_proxy.guzzle_client:
         class: GuzzleHttp\Client
+
+    bd_site_reader_proxy.cookie_jar:
+        class: GuzzleHttp\Cookie\CookieJar
+        factory_service: bd_site_reader_proxy.cookie_jar_factory
+        factory_method: createCookieJar
+
+    bd_site_reader_proxy.cookie_jar_factory:
+        class: BD\SiteReaderProxyBundle\DependencyInjection\Factory\CookieJarFactory
+        arguments:
+            - "%kernel.cache_dir%/cookiejar.json"
