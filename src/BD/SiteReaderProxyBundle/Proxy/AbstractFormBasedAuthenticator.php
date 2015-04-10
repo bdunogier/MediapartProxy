@@ -17,7 +17,7 @@ use GuzzleHttp\Cookie\CookieJar;
 abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBased, FormBased, CookieBased
 {
     /** @var CookieJar */
-    private $cookieJar;
+    private $cookieJar = true;
 
     /** @var string */
     private $username;
@@ -88,5 +88,10 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
     public function getCookieJar()
     {
         return $this->cookieJar;
+    }
+
+    public function isLoggedIn()
+    {
+        return $this->cookieJar !== null;
     }
 }

@@ -16,4 +16,10 @@ interface WebsiteAuthenticator
     public function login();
 
     public function setCredentials( $username, $password );
+
+    /**
+     * Checks if we are logged into the site, but without calling the server (e.g. do we have a Cookie)
+     * @return bool
+     */
+    public function isLoggedIn();
 }

@@ -10,6 +10,7 @@ namespace BD\SiteReaderProxy\MediapartSiteBundle;
 use BD\SiteReaderProxyBundle\Proxy\AbstractFormBasedAuthenticator;
 use BD\SiteReaderProxyBundle\Proxy\Exception\ProxyAuthenticationException;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator;
+use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CookieBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\CredentialsBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\FormBased;
 use BD\SiteReaderProxyBundle\Proxy\WebsiteAuthenticator\UrlBased;
@@ -18,7 +19,7 @@ use GuzzleHttp\Cookie\SetCookie;
 
 class MediapartAuthenticator
     extends AbstractFormBasedAuthenticator
-    implements WebsiteAuthenticator, UrlBased, CredentialsBased, FormBased
+    implements WebsiteAuthenticator, UrlBased, CredentialsBased, FormBased, CookieBased
 {
     public function getUsernameFieldName()
     {
