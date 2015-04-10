@@ -11,7 +11,7 @@ services:
 
     bd_lmd_site_reader.configuration:
         class: %bd_lmd_site_reader.configuration.class%
-        arguments: [%app_uri%]
+        arguments: [%app_uri.lmd%]
 
     bd_lmd_site_reader.authenticator:
         class: %bd_lmd_site_reader.authenticator.class%

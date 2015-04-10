@@ -7,6 +7,8 @@ parameters:
     lmd.password: ~
 
     app_uri: ~
+    app_uri.mediapart: ~
+    app_uri.lmd: ~
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
