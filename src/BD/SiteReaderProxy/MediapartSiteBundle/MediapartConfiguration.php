@@ -7,9 +7,9 @@ class MediapartConfiguration implements WebsiteConfiguration
 {
     private $appUri;
 
-    private $rssUri = 'http://www.mediapart.fr/articles/feed';
+    private $rssUri = 'https://www.mediapart.fr/articles/feed';
 
-    private $baseArticlesUri = 'http://www.mediapart.fr';
+    private $baseArticlesUri = 'https://www.mediapart.fr';
 
     /**
      * @param $username
@@ -45,6 +45,6 @@ class MediapartConfiguration implements WebsiteConfiguration
      */
     public function isDisconnected( $html )
     {
-        return strstr( $html, 'disconnected_link' );
+        return strstr( $html, 'reserved-content' );
     }
 }

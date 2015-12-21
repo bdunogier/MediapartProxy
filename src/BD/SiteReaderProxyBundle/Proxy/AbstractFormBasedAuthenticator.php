@@ -76,7 +76,7 @@ abstract class AbstractFormBasedAuthenticator implements CredentialsBased, UrlBa
 
         $this->guzzle->post(
             $this->getUri(),
-            ['body' => $postFields, 'allow_redirects' => true, 'cookies' => $this->getCookieJar() ]
+            ['body' => $postFields, 'allow_redirects' => true, 'cookies' => $this->getCookieJar(), 'verify' => false]
         );
 
         $this->verifyCookies( $this->getCookieJar() );

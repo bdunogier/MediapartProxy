@@ -28,36 +28,25 @@ class MediapartAuthenticator
 
     public function getPasswordFieldName()
     {
-        return 'pass';
+        return 'password';
     }
 
     public function getExtraFormFields()
     {
-        return ["op" => "ok", "form_id" => "user_login_block"];
+        return ["op" => "ok"];
     }
 
     public function verifyCookies( CookieJar $cookieJar )
     {
-        $gotSessionCookie = $gotRoleCookie = false;
-
         /** @var SetCookie $cookie */
         foreach ( $cookieJar as $cookie )
         {
-            if ( substr( $cookie->getName(), 0, 4 ) == 'SESS' )
+            if ( $cookie->getName() == 'MPSESSID' )
             {
-                $gotSessionCookie = true;
-                continue;
-            }
-
-            if ( $cookie->getName() === 'roles'  && $cookie->getValue() === 'authenticated+user%3A%3Aabonne' )
-            {
-                $gotRoleCookie = true;
+                return true;
             }
         }
 
-        if ( !$gotRoleCookie || !$gotSessionCookie )
-        {
-            throw new ProxyAuthenticationException( $this->getUri() );
-        }
+        throw new ProxyAuthenticationException( $this->getUri() );
     }
 }

@@ -76,9 +76,9 @@ class BaseWebsiteBrowser implements WebsiteBrowser, WebsiteBrowser\SessionAware
     {
         $url = $this->configuration->getBaseArticleUri() . '/' . ltrim( $uri, '/' );
 
-        $response = $this->guzzle->get( $url, ['cookies' => $this->authenticator->getCookieJar()] );
+        $response = $this->guzzle->get( $url, ['cookies' => $this->authenticator->getCookieJar(), 'verify' => false] );
 
-        if ( $this->configuration->isDisconnected( $response->getBody() ) )
+        if ( $this->configuration->isDisconnected( $response->getBody()->getContents() ) )
         {
             throw new ProxyAuthenticationException( $uri );
         }

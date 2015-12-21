@@ -15,7 +15,7 @@ services:
     bd_mediapart_site_reader.mediapart_authenticator:
         class: %bd_mediapart_site_reader.mediapart_authenticator.class%
         calls:
-            - [setUri, ['http://www.mediapart.fr/?destination=node']]
+            - [setUri, ['https://www.mediapart.fr/login_check']]
             - [setCredentials, [%mediapart_login%, %mediapart_password%]]
             - [setGuzzleClient, [@bd_site_reader_proxy.guzzle_client]]
             - [setCookieJar, [@bd_site_reader_proxy.cookie_jar]]
