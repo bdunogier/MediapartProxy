@@ -23,7 +23,7 @@ class MediapartConfiguration implements WebsiteConfiguration
 
     public function fixupRssLink( $rssLink )
     {
-        $link = str_replace( 'http://www.mediapart.fr/', $this->appUri, $rssLink );
+        $link = str_replace( 'https://www.mediapart.fr/', $this->appUri, $rssLink );
         $link .= '?onglet=full';
         return $link;
     }
